@@ -35,7 +35,7 @@
   security set-keychain-settings -t 3600 -l ~/Library/Keychains/ios-build.keychain
 
   echo "Importing $IOS_CERTIFICATE to keychain"
-  security import $cur_dir/certs/$IOS_CERTIFICATE -k ~/Library/Keychains/ios-build.keychain -P $IOS_CERTIFICATE_KEY -T "/usr/bin/codesign" -A
+  security import $cur_dir/certs/$IOS_CERTIFICATE -k ~/Library/Keychains/ios-build.keychain -P "ios-build-password" -T "/usr/bin/codesign" -A
 
   #Mac OS Sierra https://stackoverflow.com/questions/39868578/security-codesign-in-sierra-keychain-ignores-access-control-settings-and-ui-p
   security set-key-partition-list -S apple-tool:,apple: -s -k "ios-build-password" ios-build.keychain
