@@ -1,0 +1,223 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+before_all do
+  #ensure_git_branch(
+  #  branch: 'build'
+  #)
+  #ensure_git_status_clean
+  #git_pull
+end
+
+default_platform(:ios)
+platform :ios do
+  lane :build do
+     match(type: "appstore")
+     build_app(
+      scheme: "AixiangdaoDemo",
+      workspace:"ios/AixiangdaoDemo.xcworkspace",
+      clean: true,
+      export_method:"ad-hoc",
+    )
+  end
+end
+
+platform :android do  
+  desc 'Build the Android application.'
+  lane :build do
+    gradle(task: 'clean', project_dir: 'android/')
+    gradle(task: 'assemble', build_type: 'Release', project_dir: 'android/')
+  end
+  lane :beta do
+    build
+    #supply(track: 'beta', track_promote_to: 'beta')
+    #git_commit(path: ['./android/gradle.properties'], message: 'Bump versionCode')
+  end
+  lane :uploadpgyer do
+    #apk_name=sh("basename $(find ../android -name *.apk)")
+    #apk_path="/android/app/build/outputs/apk/" + apk_name
+    pgyer(
+      api_key: "13dbf0cb1ab283314618721c28240d9c", 
+      user_key: "9d270f0cd9408589e281dbfe30513f87", 
+      update_description: "update by fastlane",
+      apk: environment_variable(get: "apk")
+    )
+  end
+  lane :uploadhockey do
+    hockey(
+      api_token: "6134d424e0854d2eab2f25403f5b2b4b",
+      apk: environment_variable(get: "apk")
+    )
+  end
+  lane :senddingding do
+    # 钉钉机器人
+    app_patch   = "0.0.1"
+    app_version = "1.0"
+    app_name    = "aixiangdao"
+    app_branch  = git_branch
+    commit = last_git_commit
+    notes = commit[:message] # message of commit
+    author = commit[:author] # author of the commit
+    author_email = commit[:author_email] # email of the author of the commit
+    hash = commit[:commit_hash] # long sha of commit
+    short_hash = commit[:abbreviated_commit_hash] # short sha of commit
+    app_url = "https://www.pgyer.com/JTS1"
+    dingTalk_url = "https://oapi.dingtalk.com/robot/send?access_token=8d90af1126863368d8049e2bee552ba828eb2106add33b92ea9d94062851e1fc"
+    install_url = "https://www.pgyer.com/apiv2/app/install?appKey=2524ba99a8961785a36f98351184920f&_api_key=05070d18997b90919100d87d7b5882b9"
+    picUrl = "https://appicon.pgyer.com/image/view/app_icons/b2fbf5d38f8fea61797d87e5bd3b8553/120"
+    markdown = 
+    {
+      msgtype: "link", 
+      link: {
+          text: "分支: #{app_branch}\n提交人: #{author}\n修改日志: #{notes}\n", 
+          title: "爱享到 #{app_branch} 分支安卓内测版发布, 快来试试！", 
+          atMobiles: ["15626256146"],
+          isAtAll: true,
+          picUrl: "#{picUrl}",
+          messageUrl: "#{app_url}"
+      }
+    }
+    uri = URI.parse(dingTalk_url)
+    https = Net::HTTP.new(uri.host, uri.port)
+    https.use_ssl = true
+    request = Net::HTTP::Post.new(uri.request_uri)
+    request.add_field('Content-Type', 'application/json')
+    request.body = markdown.to_json
+
+    response = https.request(request)
+    puts "------------------------------"
+    puts "Response #{response.code} #{response.message}: #{response.body}"
+  end
+  lane :faildingding do
+    # 钉钉机器人
+    app_patch   = "0.0.1"
+    app_version = "1.0"
+    app_name    = "aixiangdao"
+    app_branch  = git_branch
+    commit = last_git_commit
+    notes = commit[:message] # message of commit
+    author = commit[:author] # author of the commit
+    author_email = commit[:author_email] # email of the author of the commit
+    hash = commit[:commit_hash] # long sha of commit
+    short_hash = commit[:abbreviated_commit_hash] # short sha of commit
+    build_url = "https://app.bitrise.io/app/bd7728db54752cf3#/builds"
+    dingTalk_url = "https://oapi.dingtalk.com/robot/send?access_token=8d90af1126863368d8049e2bee552ba828eb2106add33b92ea9d94062851e1fc"
+    install_url = "https://www.pgyer.com/apiv2/app/install?appKey=ae4e19e8142d1f6e975d51aee84dc2dd&_api_key=13dbf0cb1ab283314618721c28240d9c"
+    picUrl = "https://appicon.pgyer.com/image/view/app_icons/b2fbf5d38f8fea61797d87e5bd3b8553/120"
+    markdown = 
+    {
+      msgtype: "link", 
+      link: {
+          text: "分支: #{app_branch}\n提交人: #{author}\n修改日志: #{notes}\n", 
+          title: "axd-app 安卓 #{app_branch} 分支打包失败, 请速检查任务！", 
+          atMobiles: ["15626256146"],
+          isAtAll: true,
+          picUrl: "#{picUrl}",
+          messageUrl: "#{build_url}"
+      }
+    }
+    uri = URI.parse(dingTalk_url)
+    https = Net::HTTP.new(uri.host, uri.port)
+    https.use_ssl = true
+    request = Net::HTTP::Post.new(uri.request_uri)
+    request.add_field('Content-Type', 'application/json')
+    request.body = markdown.to_json
+
+    response = https.request(request)
+    puts "------------------------------"
+    puts "Response #{response.code} #{response.message}: #{response.body}"
+  end
+  lane :Darwinfail do
+    # 钉钉机器人
+    app_patch   = "0.0.1"
+    app_version = "1.0"
+    app_name    = "aixiangdao"
+    app_branch  = git_branch
+    commit = last_git_commit
+    notes = commit[:message] # message of commit
+    author = commit[:author] # author of the commit
+    author_email = commit[:author_email] # email of the author of the commit
+    hash = commit[:commit_hash] # long sha of commit
+    short_hash = commit[:abbreviated_commit_hash] # short sha of commit
+    build_url = "https://app.bitrise.io/app/bd7728db54752cf3#/builds"
+    dingTalk_url = "https://oapi.dingtalk.com/robot/send?access_token=8d90af1126863368d8049e2bee552ba828eb2106add33b92ea9d94062851e1fc"
+    install_url = "https://www.pgyer.com/apiv2/app/install?appKey=ae4e19e8142d1f6e975d51aee84dc2dd&_api_key=13dbf0cb1ab283314618721c28240d9c"
+    picUrl = "https://appicon.pgyer.com/image/view/app_icons/b2fbf5d38f8fea61797d87e5bd3b8553/120"
+    markdown = 
+    {
+      msgtype: "link", 
+      link: {
+          text: "分支: #{app_branch}\n提交人: #{author}\n修改日志: #{notes}\n", 
+          title: "axd-app IOS #{app_branch} 分支打包失败, 请速检查任务！", 
+          atMobiles: ["15626256146"],
+          isAtAll: true,
+          picUrl: "#{picUrl}",
+          messageUrl: "#{build_url}"
+      }
+    }
+    uri = URI.parse(dingTalk_url)
+    https = Net::HTTP.new(uri.host, uri.port)
+    https.use_ssl = true
+    request = Net::HTTP::Post.new(uri.request_uri)
+    request.add_field('Content-Type', 'application/json')
+    request.body = markdown.to_json
+
+    response = https.request(request)
+    puts "------------------------------"
+    puts "Response #{response.code} #{response.message}: #{response.body}"
+  end
+  lane :testdingding do
+    # 钉钉机器人
+    app_patch   = "0.0.1"
+    app_version = "1.0"
+    app_name    = "aixiangdao"
+    app_branch  = git_branch
+    commit = last_git_commit
+    notes = commit[:message] # message of commit
+    author = commit[:author] # author of the commit
+    author_email = commit[:author_email] # email of the author of the commit
+    hash = commit[:commit_hash] # long sha of commit
+    short_hash = commit[:abbreviated_commit_hash] # short sha of commit
+    app_url = "https://www.pgyer.com/JTS1"
+    dingTalk_url = "https://oapi.dingtalk.com/robot/send?access_token=8d90af1126863368d8049e2bee552ba828eb2106add33b92ea9d94062851e1fc"
+    install_url = "https://www.pgyer.com/apiv2/app/install?appKey=ae4e19e8142d1f6e975d51aee84dc2dd&_api_key=13dbf0cb1ab283314618721c28240d9c"
+    picUrl = "https://www.pgyer.com/manager/dashboard/app/ae4e19e8142d1f6e975d51aee84dc2dd"
+    markdown = 
+    {
+      msgtype: "markdown", 
+      markdown: {
+          text: "爱享到已经更新啦，快用你的安卓手机试试吧! \n 
+          **分支:** #{app_branch} \n 
+          **修改日志：** #{notes} \n 
+          **提交人：** #{author} \n 
+          [点击安装](#{install_url})\n 
+          ![](https://www.pgyer.com/manager/dashboard/app/ae4e19e8142d1f6e975d51aee84dc2dd)",
+          title: "爱享到 #{app_branch} 分支安卓内测版发布", 
+      },
+     at: {
+       isAtAll: false
+     }
+    }
+    puts markdown
+    uri = URI.parse(dingTalk_url)
+    https = Net::HTTP.new(uri.host, uri.port)
+    https.use_ssl = true
+    request = Net::HTTP::Post.new(uri.request_uri)
+    request.add_field('Content-Type', 'application/json')
+    request.body = markdown.to_json
+    response = https.request(request)
+    puts "------------------------------"
+    puts "Response #{response.code} #{response.message}: #{response.body}"
+  end
+end

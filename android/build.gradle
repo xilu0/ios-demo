@@ -1,0 +1,79 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+ext {
+    android = [
+        compileSdkVersion: 26,
+        buildToolsVersion: '26.0.1',
+        minSdkVersion    : 16,
+        targetSdkVersion : 26,
+        javaVersion      : JavaVersion.VERSION_1_8,
+        versionCode      : 56,
+        versionName      : '2.1.1'
+    ]
+
+    reactNativeVersion = '0.55.4' 
+    // depsVersion = [
+    //       support_version : '26.1.0',
+    //       retrofit_version: '2.3.0'
+    // ]
+    
+}
+
+
+buildscript {
+    repositories {
+        jcenter()
+        //添加 Sensors Analytics maven 库地址
+        maven {
+            url 'https://dl.bintray.com/zouyuhan/maven'
+        }
+        maven {
+            url 'https://maven.google.com'
+            name 'Google'
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.2.3'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+        //添加神策分析 android-gradle-plugin 依赖
+        classpath 'com.sensorsdata.analytics.android:android-gradle-plugin2:2.0.6'
+    }
+}
+
+allprojects {
+    repositories {
+        mavenLocal()
+        jcenter()
+        maven {
+            url 'https://maven.google.com'
+            name 'Google'
+        }
+        maven { url "https://jitpack.io" }
+
+        maven {
+            url 'http://maven.aliyun.com/nexus/content/repositories/releases/'
+        }
+        maven {
+            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+            url "$rootDir/../node_modules/react-native/android"
+        }
+        maven { url "$rootDir/../node_modules/react-native/android" }
+        // ADD THIS
+        //添加 Sensors Analytics maven 库地址
+        maven {
+            url 'https://dl.bintray.com/zouyuhan/maven'
+        }
+
+    }
+}
+
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty("android")) {
+            android {
+                compileSdkVersion rootProject.android.compileSdkVersion
+                buildToolsVersion rootProject.android.buildToolsVersion
+            }
+        }
+    }
+}

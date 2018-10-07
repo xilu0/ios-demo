@@ -1,0 +1,57 @@
+$ /usr/bin/xcrun /Library/Ruby/Gems/2.3.0/gems/fastlane-2.104.0/gym/lib/assets/wrap_xcodebuild/xcbuild-safe.sh -exportArchive -exportOptionsPlist '/var/folders/kr/970xwdwd36ncvz7_8ff0h7g80000gp/T/gym_config20180911-89369-1tbt0uj.plist' -archivePath /Users/shmilyvidian/Library/Developer/Xcode/Archives/2018-09-11/AixiangdaoDemo\ 2018-09-11\ 17.58.20.xcarchive -exportPath '/var/folders/kr/970xwdwd36ncvz7_8ff0h7g80000gp/T/gym_output20180911-89369-1fqh1az'
+RVM detected, forcing to use system ruby
+Now using system ruby.
++ xcodebuild -exportArchive -exportOptionsPlist /var/folders/kr/970xwdwd36ncvz7_8ff0h7g80000gp/T/gym_config20180911-89369-1tbt0uj.plist -archivePath '/Users/shmilyvidian/Library/Developer/Xcode/Archives/2018-09-11/AixiangdaoDemo 2018-09-11 17.58.20.xcarchive' -exportPath /var/folders/kr/970xwdwd36ncvz7_8ff0h7g80000gp/T/gym_output20180911-89369-1fqh1az
+2018-09-11 18:07:46.643 xcodebuild[94804:859410] [MT] IDEDistribution: -[IDEDistributionLogging _createLoggingBundleAtPath:]: Created bundle at path '/var/folders/kr/970xwdwd36ncvz7_8ff0h7g80000gp/T/AixiangdaoDemo_2018-09-11_18-07-46.642.xcdistributionlogs'.
+2018-09-11 18:08:01.014 xcodebuild[94804:859410] [MT] IDEDistribution: Step failed: <IDEDistributionPackagingStep: 0x7fc81c9c1d50>: Error Domain=IDEFoundationErrorDomain Code=1 "Failed to verify bitcode in QBImagePicker.framework/QBImagePicker:
+error: Cannot extract bundle from /var/folders/kr/970xwdwd36ncvz7_8ff0h7g80000gp/T/XcodeDistPipeline.gvA/Root/Payload/AixiangdaoDemo.app/Frameworks/QBImagePicker.framework/QBImagePicker (x86_64)
+
+" UserInfo={NSLocalizedDescription=Failed to verify bitcode in QBImagePicker.framework/QBImagePicker:
+error: Cannot extract bundle from /var/folders/kr/970xwdwd36ncvz7_8ff0h7g80000gp/T/XcodeDistPipeline.gvA/Root/Payload/AixiangdaoDemo.app/Frameworks/QBImagePicker.framework/QBImagePicker (x86_64)
+
+}
+error: exportArchive: Failed to verify bitcode in QBImagePicker.framework/QBImagePicker:
+error: Cannot extract bundle from /var/folders/kr/970xwdwd36ncvz7_8ff0h7g80000gp/T/XcodeDistPipeline.gvA/Root/Payload/AixiangdaoDemo.app/Frameworks/QBImagePicker.framework/QBImagePicker (x86_64)
+
+
+
+Error Domain=IDEFoundationErrorDomain Code=1 "Failed to verify bitcode in QBImagePicker.framework/QBImagePicker:
+error: Cannot extract bundle from /var/folders/kr/970xwdwd36ncvz7_8ff0h7g80000gp/T/XcodeDistPipeline.gvA/Root/Payload/AixiangdaoDemo.app/Frameworks/QBImagePicker.framework/QBImagePicker (x86_64)
+
+" UserInfo={NSLocalizedDescription=Failed to verify bitcode in QBImagePicker.framework/QBImagePicker:
+error: Cannot extract bundle from /var/folders/kr/970xwdwd36ncvz7_8ff0h7g80000gp/T/XcodeDistPipeline.gvA/Root/Payload/AixiangdaoDemo.app/Frameworks/QBImagePicker.framework/QBImagePicker (x86_64)
+
+}
+
+** EXPORT FAILED **
+[18:08:01]: Exit status: 70
+
++---------------+-------------------------+
+|            Build environment            |
++---------------+-------------------------+
+| xcode_path    | /Applications/Xcode.app |
+| gym_version   | 2.104.0                 |
+| export_method | ad-hoc                  |
+| sdk           | iPhoneOS11.4.sdk        |
++---------------+-------------------------+
+
+[18:08:01]: ▸     cd /Users/shmilyvidian/testDir/axd-app/ios
+[18:08:01]: ▸     export PATH="/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/local/opt/libiconv/bin:.:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/gradle-4.10-all/bin:/Users/shmilyvidian/Library/Android/sdk/tools:/Users/shmilyvidian/Library/Android/sdk/platform-tools:/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/bin:/Users/shmilyvidian/.rvm/bin:/usr/local/gradle-4.10/bin"
+[18:08:01]: ▸     /usr/bin/touch -c /Users/shmilyvidian/Library/Developer/Xcode/DerivedData/AixiangdaoDemo-fhgdjhpwvkancvfgusimtggodfox/Build/Intermediates.noindex/ArchiveIntermediates/AixiangdaoDemo/BuildProductsPath/Release-iphoneos/AixiangdaoDemo.app.dSYM
+[18:08:01]: ▸ ** ARCHIVE SUCCEEDED **
+[18:08:01]:
+[18:08:01]: ⬆️  Check out the few lines of raw `xcodebuild` output above for potential hints on how to solve this error
+[18:08:01]: 📋  For the complete and more detailed error log, check the full log at:
+[18:08:01]: 📋  /Users/shmilyvidian/Library/Logs/gym/AixiangdaoDemo-AixiangdaoDemo.log
+[18:08:01]:
+[18:08:01]: Looks like fastlane ran into a build/archive error with your project
+[18:08:01]: It's hard to tell what's causing the error, so we wrote some guides on how
+[18:08:01]: to troubleshoot build and signing issues: https://docs.fastlane.tools/codesigning/getting-started/
+[18:08:01]: Before submitting an issue on GitHub, please follow the guide above and make
+[18:08:01]: sure your project is set up correctly.
+[18:08:01]: fastlane uses `xcodebuild` commands to generate your binary, you can see the
+[18:08:01]: the full commands printed out in yellow in the above log.
+[18:08:01]: Make sure to inspect the output above, as usually you'll find more error information there
+[18:08:01]:
+
+[!] Error packaging up the application

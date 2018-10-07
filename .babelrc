@@ -1,0 +1,27 @@
+{
+  "env": {
+    "production": {
+      "plugins": ["transform-remove-console"]
+    }
+  },
+  "presets": [
+    "babel-preset-react-native-stage-0/decorator-support"
+  ],
+  "plugins": [
+    "transform-react-jsx-source",
+    [
+      "module-resolver",
+      {
+        "cwd": "babelrc",
+        "root": [
+          "."
+        ],
+        "alias": {
+          "img": "./src/img",
+          "js": "./src/js",
+          "json": "./src/json"
+        }
+      }
+    ]
+  ]
+}

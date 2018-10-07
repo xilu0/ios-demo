@@ -1,0 +1,25 @@
+{
+  "typescript.updateImportsOnFileMove.enabled": "never",
+  "tslint.autoFixOnSave": true,
+  "tslint.jsEnable": true,
+  "tslint.run": "onType",
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "git.ignoreLimitWarning": true,
+  "search.location": "sidebar",
+  "background.customImages": [
+    "file:///Users/mac/Desktop/壁纸/girl.jpg"
+  ],
+  "background.style": {
+    "content": "''",
+    "pointer-events": "none",
+    "position": "absolute",
+    "z-index": "99999",
+    "width": "100%",
+    "height": "100%",
+    "background-position": "100% 100%",
+    "background-repeat": "no-repeat",
+    "opacity": 0.1
+  },
+  "background.useDefault": false,
+}
